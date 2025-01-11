@@ -1,0 +1,24 @@
+body {
+    padding: 10px;
+}
+
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; 
+}
+
+.img-container {
+    height: 220px;
+}
+
+.link-listing {
+    color: black;
+    text-decoration: none;
+}
+
+.link-listing:hover {
+    color: black;
+    text-decoration: none;
+}

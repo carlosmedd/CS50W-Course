@@ -1,0 +1,3 @@
+# Golang
+
+Best programming language ever! Ever ever...

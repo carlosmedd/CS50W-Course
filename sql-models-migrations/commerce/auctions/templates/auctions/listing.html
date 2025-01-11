@@ -1,0 +1,90 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="mr-5">Listing: {{ listing.title }}</h2>
+
+    <div class="d-flex mb-2">
+        {% if listing.is_active and listing_owner %}
+            <form action="{% url "close_listing" listing.id %}" method="post" class="mr-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm"><b>Close auction</b></button>
+            </form>
+        {% endif %}
+
+        {% if not is_in_watchlist %}
+            <form action="{% url "add_to_watchlist" listing.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-sm"><b>Add to watchlist</b></button>
+            </form>
+        {% else %}
+            <form action="{% url "remove_from_watchlist" listing.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm"><b>Remove from watchlist</b></button>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if not listing.is_active %}
+        {% if bid_owner %}
+            <div class="alert alert-success" role="alert">
+                The auction was closed. Congratulations, you are the winner!
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">
+                The auction was closed.
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="img-container">
+        <img src="{{ listing.image_url }}">
+    </div>
+    <p>{{ listing.description }}</p>
+    <h3>${{ listing.price }}</h3>
+
+    <form action="{% url "place_bid" listing.id %}" method="post" class="mb-3">
+        {% csrf_token %}
+        <small>{{ len_bids }} bid(s) so far. 
+            {% if bid_owner %}
+                Your bid is the current bid.
+            {% else %}
+                Your bid is not the current bid.
+            {% endif %} 
+        </small>
+        <div class="form-group">
+            {{ bid_form.amount }}
+            {{ bid_form.amount.errors }}
+        </div>
+        <input class="btn btn-primary" type="submit" value="Place Bid">
+    </form>
+    
+    <h4>Details</h4>
+    <ul>
+        <li>Listed by: <a href="{% url "user_listings" listing.creator.id %}">{{ listing.creator }}</a></li>
+        <li>Category: 
+            {% if listing.category %}
+                {{ listing.category }}
+            {% else %}
+                No Category Listed
+            {% endif %}
+        </li>
+    </ul>
+
+    <h4>Comments</h4>
+    <form action="{% url "comment" listing.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-floating">
+            <textarea name="content" class="form-control mb-2" placeholder="Leave a comment here" style="height: 100px" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm mb-3"><b>Add comment</b></button>
+    </form>
+
+    {% for comment in comments %}
+        <div class="card p-3">
+            <b>By {{ comment.user }}</b>
+            {{ comment.content }}
+            <small class="text-secondary">At {{ comment.timestamp }}</small>
+        </div>
+    {% endfor %}
+
+{% endblock body %}

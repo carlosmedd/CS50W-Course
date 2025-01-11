@@ -22,10 +22,10 @@ Java incluye recolección automática de basura (garbage collection), lo que fac
 
 #### Tipos de Datos
 Java es fuertemente tipado, con tipos primitivos como:
-* int
-* double
-* boolean
-* char
+*int
+*double
+*boolean
+*char
 
 #### Enlaces Relacionados
 * [Documentación Oficial](https://docs.oracle.com/en/java/)

@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>My watchlist</h2>
+    {% for listing in listings %}
+        <div class="col-12 card mb-3">
+            <div class="d-flex">
+                <div class="img-container d-flex justify-content-center col-4">
+                    <img src="{{ listing.image_url }}">
+                </div>
+                <div class="my-3">
+                    <a href="{% url "listing" listing.id %}" class="link-listing"><h5><b>{{ listing.title }}</b></h5></a>
+                    <h5><b>Price: </b>${{ listing.price }}</h5>
+                    <p>{{ listing.description }}</p>
+                    <small class="text-secondary">Created {{ listing.timestamp }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <p>There's no listing in your watchlist.</p>
+    {% endfor %} 
+    </div>
+
+{% endblock %}
